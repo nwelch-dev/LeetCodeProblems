@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace LeetCodeProblems
@@ -92,16 +93,124 @@ namespace LeetCodeProblems
 
             return luckyNumber;
         }
-        static void Main(string[] args)
+
+        public static int NumSpecial(int[][] mat)
         {
-            //Console.WriteLine("NeedleIndex: {0}", strStr("", ""));
+            bool uniqueRow = false;
+            bool uniqueColumn = false;
+            int numOfSpecial = 0;
 
-            //reverseInt(123);
+            for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < mat[0].Length; j++)
+                {
+                    if (mat[i][j] == 1)
+                    {
+                        uniqueRow = checkRow(mat, j);
+                        uniqueColumn = checkColumn(mat, i);
 
-            /*
-            int[] arr = { 5, 4, 7, 8, 4, 8, 8, 3, 7, 7, 6, 3, 7, 6, 5, 6, 8, 4, 5, 7, 4, 7, 7, 5, 2, 5, 6, 6, 8, 1, 6, 8, 8, 8, 9, 3, 2, 9 };
-            Console.WriteLine(FindLucky(arr));
-            */
+                        if (uniqueRow == true && uniqueColumn == true)
+                        {
+                            numOfSpecial++;
+                        }
+                    }
+                }
+            }
+
+            return numOfSpecial;
+        }
+
+        public static bool checkRow(int[][] mat, int col)
+        {
+            int rowLength = mat.GetLength(0);
+            int oneCount = 0;
+            for (int i = 0; i < rowLength; i++)
+            {
+                if (mat[i][col] == 1)
+                    oneCount++;
+            }
+
+            return oneCount == 1;
+        }
+
+        public static bool checkColumn(int[][] mat, int row)
+        {
+            int columnLength = mat[0].Length;
+            int oneCount = 0;
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                if (mat[row][i] == 1)
+                    oneCount++;
+            }
+
+            return oneCount == 1;
+        }
+        
+
+        // Test Cases
+
+        [TestFixture]
+        class TestCases
+        {
+            [Test]
+            public void NumSpecial_With1Special()
+            {
+                int[][] mat =
+                {
+                    new int[] {1,0,0},
+                    new int[] {0,0,1},
+                    new int[] {1,0,0}
+                };
+
+                int result = NumSpecial(mat);
+                Assert.AreEqual(1, result);
+            }
+
+            [Test]
+            public void NumSpecial_With3Special()
+            {
+                int[][] mat =
+                {
+                    new int[] {1,0,0},
+                    new int[] {0,1,0},
+                    new int[] {0,0,1}
+                };
+
+                int result = NumSpecial(mat);
+                Assert.AreEqual(3, result);
+            }
+
+            [Test]
+            public void NumSpecial_With2Special()
+            {
+                int[][] mat =
+                {
+                    new int[] {0,0,0,1},
+                    new int[] {1,0,0,0},
+                    new int[] {0,1,1,0},
+                    new int[] {0,0,0,0}
+                };
+
+                int result = NumSpecial(mat);
+                Assert.AreEqual(2, result);
+            }
+
+            [Test]
+            public void NumSpecial_With3Special5RowsRCols()
+            {
+                int[][] mat =
+                {
+                    new int[] {0,0,0,0,0},
+                    new int[] {1,0,0,0,0},
+                    new int[] {0,1,0,0,0},
+                    new int[] {0,0,1,0,0},
+                    new int[] {0,0,0,1,1}
+                };
+
+                int result = NumSpecial(mat);
+                Assert.AreEqual(2, result);
+            }
         }
     }
 }
