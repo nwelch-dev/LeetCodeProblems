@@ -209,7 +209,7 @@ namespace LeetCodeProblems
                 };
 
                 int result = NumSpecial(mat);
-                Assert.AreEqual(2, result);
+                Assert.AreEqual(3, result);
             }
         }
     }
